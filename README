@@ -1,0 +1,23 @@
+This is a small tool for git that will list every branch that is not merged
+into some special branches (called release branches)
+
+You configure this tool with the following git keys:
+
+unmerged.releases
+	These are the branches that are considered as release branches.
+	Separate them with spaces
+
+unmerged.exclude
+	If you want to exclude any branches from the output, then list them
+	here separated with spaces. Optional.
+
+
+For example you could put the following into your projects .git/config to
+list every branch that is not merged into any of master, r/v1, r/v2
+branches, but exclude the 'attic_foo' and 'attic_bar' branches even if they
+aren't merged:
+
+[unmerged]
+	releases = master r/v1 r/v2
+	exclude = attic_foo attic_bar
+

@@ -1,0 +1,40 @@
+#!/bin/bash
+#
+# This command will list all the branches that are not merged into
+# some specific branches. We call these branches 'release branches'
+#
+# Copyright (c) 2012 Nagy Attila Gabor
+#
+
+
+# These branches are considered as 'merged'
+RELEASES=`git config --local --get 'unmerged.releases' || echo "master"`
+
+EXCLUDE=`git config --local --get 'unmerged.exclude' || echo "unknown-none-unknown"`
+
+
+EXCLUDES=""
+for i in ${EXCLUDE}; do
+    EXCLUDES=${EXCLUDES}'\|'${i}
+done
+EXCLUDES=`echo ${EXCLUDES} |cut -c 3- `
+
+tmp=""
+for i in ${RELEASES}; do
+    tmp="${tmp} ^${i}"
+done
+RELEASES=${tmp}
+
+refs=`git rev-list --all ${RELEASES}`
+
+branches=`git branch -r |cut -c 3-`
+
+for branch in $branches; do
+    commitid=`git rev-list -n 1 ${branch}`
+    
+    num=`echo ${refs}|grep -c ${commitid}`
+    
+    if (( $num > 0 && `echo ${branch} |grep -v ${EXCLUDES}|wc -l` > 0 )); then
+        echo $commitid $branch
+    fi
+done
