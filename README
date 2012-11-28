@@ -1,5 +1,9 @@
-This is a small tool for git that will list every branch that is not merged
+git-unmerged is a tool to find commits that have not been merged into the upstream branches.
+After basic configuration it will list every branch that is not merged
 into some special branches (called release branches)
+
+It supports having multiple upstream branches, and also an exclude list for branches that
+aren't intended to be soon.
 
 You configure this tool with the following git keys:
 
