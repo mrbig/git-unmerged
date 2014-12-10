@@ -8,9 +8,9 @@
 
 
 # These branches are considered as 'merged'
-RELEASES=`git config --local --get 'unmerged.releases' || echo "master"`
+RELEASES=`git config --get 'unmerged.releases' || echo "master"`
 
-EXCLUDE=`git config --local --get 'unmerged.exclude' || echo "unknown-none-unknown"`
+EXCLUDE=`git config --get 'unmerged.exclude' || echo "unknown-none-unknown"`
 
 
 EXCLUDES=""
@@ -27,7 +27,7 @@ RELEASES=${tmp}
 
 refs=`git rev-list --all ${RELEASES}`
 
-branches=`git branch -r |cut -c 3-`
+branches=`git branch -r |cut -c 3- | grep -v -- '->'`
 
 for branch in $branches; do
     commitid=`git rev-list -n 1 ${branch}`
